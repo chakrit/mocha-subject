@@ -23,6 +23,7 @@ MOCHA_TDD_OPTS = $(MOCHA_OPTS) --watch --reporter $(TDD_REPORTER)
 MOCHA_COVER_OPTS = $(MOCHA_OPTS) --reporter $(COVER_REPORTER)
 ISTANBUL_OPTS = instrument --variable global.__coverage__ --no-compact
 PLATO_OPTS = -d html-report/
+HINT_OPTS = --show-non-errors
 
 
 default: node_modules
@@ -45,10 +46,11 @@ tdd: node_modules
 
 # Code instrumentation
 instrument: node_modules $(COV_FILES)
-
 cover: instrument
 	NODE_ENV=$(TEST_ENV) COVER=1 $(BIN)/mocha $(MOCHA_COVER_OPTS) $(TEST_FILES)
 
+hint:
+	$(BIN)/jshint $(HINT_OPTS) $(LIB_FILES)
 complex:
 	$(BIN)/plato $(PLATO_OPTS) $(LIB_FILES)
 
@@ -59,5 +61,5 @@ clean:
 	-rm -Rf html-report/
 
 
-.PHONY: debug default test tdd clean instrument cover complex
+.PHONY: debug default test tdd hint clean instrument cover complex
 
