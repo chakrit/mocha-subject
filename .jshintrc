@@ -1,0 +1,12 @@
+{ "camelcase": true
+, "curly": false
+, "strict": true
+, "globalstrict": true
+, "maxparams": 4
+, "maxdepth": 5
+, "asi": false
+, "laxcomma": true
+, "laxbreak": true
+, "shadow": true
+, "node": true
+}

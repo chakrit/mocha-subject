@@ -24,9 +24,10 @@ MOCHA_COVER_OPTS = $(MOCHA_OPTS) --reporter $(COVER_REPORTER)
 ISTANBUL_OPTS = instrument --variable global.__coverage__ --no-compact
 PLATO_OPTS = -d html-report/
 HINT_OPTS = --show-non-errors
+GROC_OPTS = -t lib/ -o doc/ --no-whitespace-after-token false
 
 
-default: node_modules
+default: node_modules doc hint
 
 node_modules:
 	npm install
@@ -50,16 +51,22 @@ cover: instrument
 	NODE_ENV=$(TEST_ENV) COVER=1 $(BIN)/mocha $(MOCHA_COVER_OPTS) $(TEST_FILES)
 
 hint:
-	$(BIN)/jshint $(HINT_OPTS) $(LIB_FILES)
+	@$(BIN)/jshint $(HINT_OPTS) $(LIB_FILES)
+hint-test:
+	@$(BIN)/jshint $(HINT_OPTS) $(TEST_FILES)
+
+doc:
+	$(BIN)/groc $(GROC_OPTS) $(LIB_FILES)
+
 complex:
 	$(BIN)/plato $(PLATO_OPTS) $(LIB_FILES)
 
 
-# Cleans
 clean:
 	-rm -Rf lib-cov/
 	-rm -Rf html-report/
+	-rm -Rf doc/
 
 
-.PHONY: debug default test tdd hint clean instrument cover complex
+.PHONY: debug default test tdd hint hint-test doc clean instrument cover complex
 
