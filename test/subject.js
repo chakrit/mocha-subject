@@ -4,7 +4,6 @@
 
   var _ = require('underscore')
     , assert = require('chai').assert
-    , spy = require('sinon').spy
     , subject = require('../lib/subject');
 
   var NON_STRINGS = [123, { }, []]
