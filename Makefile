@@ -70,5 +70,5 @@ clean:
 	-rm -Rf doc/
 
 
-.PHONY: debug default test tdd hint hint-test doc clean instrument cover complex
+.PHONY: debug default test tdd hint hint-test doc doc-gh clean instrument cover complex
 
