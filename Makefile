@@ -57,6 +57,8 @@ hint-test:
 
 doc:
 	$(BIN)/groc $(GROC_OPTS) $(LIB_FILES)
+doc-gh:
+	$(BIN)/groc $(GROC_OPTS) --github $(LIB_FILES)
 
 complex:
 	$(BIN)/plato $(PLATO_OPTS) $(LIB_FILES)
