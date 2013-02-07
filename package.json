@@ -1,7 +1,7 @@
 {
   "name": "mocha-subject",
   "version": "0.1.0",
-  "description": "Provide several convenience common setup/teardown function for mocha.",
+  "description": "Convenience setup/teardown function for mocha.",
   "main": "index.js",
   "scripts": {
     "test": "make test"
