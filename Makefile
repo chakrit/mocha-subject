@@ -1,7 +1,7 @@
 
 BIN := $(shell pwd)/node_modules/.bin
 
-GLOBALS := __coverage__,buffertools,SlowBuffer,events,util,task
+GLOBALS := __coverage__,buffertools,SlowBuffer,events,util,task,subject,property
 TEST_ENV := test
 
 # Project files definition
