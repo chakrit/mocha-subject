@@ -4,6 +4,10 @@
 Provides `subject()`-style setup/teardowns combos that simplifies common test patterns
 with [mocha.js](http://visionmedia.github.com/mocha/).
 
+### API Documentation
+
+See the annotated source at http://gh.chakrit.net/mocha-subject/
+
 ### Example
 
 ```js
