@@ -10,6 +10,7 @@ LIB_FILES := $(wildcard lib/**/*.js) $(wildcard lib/*.js)
 COV_FILES := $(LIB_FILES:lib/%.js=lib-cov/%.js)
 
 INDEX_FILE = index.js
+MAIN_FILE = lib/subject.js
 
 # Test parameters so we can configure these via make
 TEST_TIMEOUT = 100
@@ -24,7 +25,7 @@ MOCHA_COVER_OPTS = $(MOCHA_OPTS) --reporter $(COVER_REPORTER)
 ISTANBUL_OPTS = instrument --variable global.__coverage__ --no-compact
 PLATO_OPTS = -d html-report/
 HINT_OPTS = --show-non-errors
-GROC_OPTS = -t lib/ -o doc/ --no-whitespace-after-token false
+GROC_OPTS = -t lib/ -o doc/ --no-whitespace-after-token false --index $(MAIN_FILE)
 
 
 default: node_modules doc hint
