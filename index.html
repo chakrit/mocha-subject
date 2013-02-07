@@ -1,66 +1,58 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Mocha-subject by chakrit</title>
+<!DOCTYPE html><html lang="en"><head><title>subject</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="subject"><meta name="groc-project-path" content="lib/subject.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">lib/subject.js</div></div><div id="document"><div class="segment"></div><div class="segment"><div class="comments"><div class="wrapper"><p>subject.js - Subject-style setups/teardowns.</p></div></div><div class="code"><div class="wrapper"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Mocha-subject</h1>
-        <p>Convenience setup/teardown combos for mocha.</p>
+  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;assert&#39;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="nx">$S</span> <span class="o">=</span> <span class="p">{</span> <span class="p">};</span> <span class="c1">// main exports</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="-infections-list">_infections list</h2></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Array of function names to adds to <code>global</code> when <code>infect()</code> is called.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">$S</span><span class="p">.</span><span class="nx">_infections</span> <span class="o">=</span> <span class="s1">&#39;subject,property&#39;</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="before-and-after-hook">before() and after() hook</h2></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Defaults to <code>global.before</code> and <code>global.after</code> which should have been added by
+mocha. This is provided in case you want to override the behavior of the <code>before()</code>
+and <code>after()</code> hook used by mocha-subject.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">$S</span><span class="p">.</span><span class="nx">_before</span> <span class="o">=</span> <span class="nx">global</span><span class="p">.</span><span class="nx">before</span><span class="p">;</span>
+  <span class="nx">$S</span><span class="p">.</span><span class="nx">_after</span> <span class="o">=</span> <span class="nx">global</span><span class="p">.</span><span class="nx">after</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="infect">infect()</h2></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Adds <code>subject()</code> and <code>property()</code> method to global scope so it can be used without
+referencing mocha-subject.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">$S</span><span class="p">.</span><span class="nx">infect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">$S</span><span class="p">.</span><span class="nx">_infections</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="nx">global</span><span class="p">[</span><span class="nx">$S</span><span class="p">.</span><span class="nx">_infections</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">=</span> <span class="nx">$S</span><span class="p">[</span><span class="nx">$S</span><span class="p">.</span><span class="nx">_infections</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="disinfect">disinfect()</h2></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Removes all functions added by <code>infect()</code> from global scope.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">$S</span><span class="p">.</span><span class="nx">disinfect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">$S</span><span class="p">.</span><span class="nx">_infections</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="k">delete</span> <span class="nx">global</span><span class="p">[</span><span class="nx">$S</span><span class="p">.</span><span class="nx">_infections</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="subject-name-object-">subject( name, object )</h2></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Adds the given <code>object</code> to current mocha test context using the specified name in a
+<code>before</code> hook and removes it afterwards in an <code>after</code> hook.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">$S</span><span class="p">.</span><span class="nx">subject</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">name</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="s1">&#39;name argument missing or not a string&#39;</span><span class="p">);</span>
+    <span class="nx">assert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">object</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span><span class="p">,</span> <span class="s1">&#39;object argument is undefined&#39;</span><span class="p">);</span>
 
-        <p class="view"><a href="https://github.com/chakrit/mocha-subject">View the Project on GitHub <small>chakrit/mocha-subject</small></a></p>
+    <span class="nx">$S</span><span class="p">.</span><span class="nx">_before</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">object</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>TODO: Is there a way to track subjects hierarchy without modifying the context?
+  storing states ourselves is probably not a good idea.</p></div></div><div class="code"><div class="wrapper">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">__subjects</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;__subjects&#39;</span><span class="p">,</span>
+          <span class="p">{</span> <span class="nx">enumerable</span><span class="o">:</span> <span class="kc">false</span>
+          <span class="p">,</span> <span class="nx">configurable</span><span class="o">:</span> <span class="kc">true</span> <span class="c1">// required for delete</span>
+          <span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="p">[]</span> <span class="p">});</span>
+      <span class="p">}</span>
 
+      <span class="k">this</span><span class="p">.</span><span class="nx">__subjects</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">object</span><span class="p">);</span>
+    <span class="p">});</span>
 
-        <ul>
-          <li><a href="https://github.com/chakrit/mocha-subject/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/chakrit/mocha-subject/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/chakrit/mocha-subject">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>Welcome to GitHub Pages.</h3>
+    <span class="nx">$S</span><span class="p">.</span><span class="nx">_after</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">delete</span> <span class="k">this</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+      <span class="k">this</span><span class="p">.</span><span class="nx">__subjects</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">__subjects</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">__subjects</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="property-name-key-">property( name, [key] )</h2></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Take property <code>name</code> from the nearest subject object and adds it to current mocha
+test context using the specified <code>key</code> (or the same name as the property if <code>key</code> is
+not specified.)</p></div></div><div class="code"><div class="wrapper">  <span class="nx">$S</span><span class="p">.</span><span class="nx">property</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">contextKey</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">assert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">name</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="s1">&#39;name argument missing or not a string&#39;</span><span class="p">);</span>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">contextKey</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span><span class="p">)</span> <span class="nx">contextKey</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="nx">assert</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">contextKey</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="s1">&#39;contextKey argument not a string&#39;</span><span class="p">);</span>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+    <span class="nx">$S</span><span class="p">.</span><span class="nx">_before</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">subject</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__subjects</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">__subjects</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
 
-<h3>Designer Templates</h3>
+      <span class="k">this</span><span class="p">[</span><span class="nx">contextKey</span><span class="p">]</span> <span class="o">=</span> <span class="nx">subject</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+    <span class="p">});</span>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+    <span class="nx">$S</span><span class="p">.</span><span class="nx">_after</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">delete</span> <span class="k">this</span><span class="p">[</span><span class="nx">contextKey</span><span class="p">];</span> <span class="p">});</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr /></div></div><div class="code"><div class="wrapper">  <span class="k">return</span> <span class="nx">$S</span><span class="p">;</span>
 
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/chakrit">chakrit</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
-</html>
+<span class="p">})();</span></div></div></div></div></body></html>
