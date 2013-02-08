@@ -1,6 +1,6 @@
 {
   "name": "mocha-subject",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Convenience setup/teardown function for mocha.",
   "main": "index.js",
   "scripts": {
