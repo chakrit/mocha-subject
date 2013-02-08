@@ -33,8 +33,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "type": "heading",
           "data": {
             "level": 2,
-            "title": "before() and after() hook",
-            "slug": "before-and-after-hook"
+            "title": "_before( func ) and _after( func ) hook",
+            "slug": "-before-func--and-after-func--hook"
           },
           "depth": 2
         }, {
