@@ -6,7 +6,8 @@
     , assert = require('chai').assert
     , subject = require('../lib/subject');
 
-  var NON_STRINGS = [123, { }, []]
+  var NON_STRINGS = [123, { }, null, undefined, [], function() { }]
+    , NON_FUNCS = [123, { }, null, undefined, [], 'string']
     , TEST_OBJECT = { testProperty: 'value' }
     , TEST_OBJECT2 = { testProperty: 'value2' };
 
@@ -19,13 +20,15 @@
       });
 
       it('should throws if `name` argument is missing or not a string', function() {
-        [123, { }, null, undefined, []].forEach(function(thing) {
+        NON_STRINGS.forEach(function(thing) {
           assert.throws(function() { subject.subject(thing); }, /name/i);
         });
       });
 
-      it('should throws if `object` argument not provided', function() {
-        assert.throws(function() { subject.subject('name'); }, /object/i);
+      it('should throws if `factory` argument is missing or not a function', function() {
+        NON_FUNCS.forEach(function(thing) {
+          assert.throws(function() { subject.subject('name', thing); }, /factory/i);
+        });
       });
     }); // subject() function
 
@@ -42,25 +45,36 @@
 
       it('should throws if contextKey is not a string', function() {
         NON_STRINGS.forEach(function(thing) {
+          if (thing === undefined) return;
           assert.throws(function() { subject.property('name', thing); }, /context/i);
         });
       });
     });
 
-    describe('simple object subject', function() {
+    describe('simple object subject factory', function() {
       describe('in test context', function() {
-        subject.subject('subject', TEST_OBJECT);
+        subject.subject('subject', function() {
+          this.accessible = true;
+          return TEST_OBJECT;
+        });
 
         it('should adds object to the context', function() {
           assert.equal(this['subject'], TEST_OBJECT);
+        });
+
+        it('should be invoked with the mocha context subject as `this`', function() {
+          assert.ok(this.accessible);
         });
 
         it('should adds a non-enumerable __subjects array to the context', function() {
           assert.instanceOf(this.__subjects, Array);
         });
 
-        it('should adds object to the end of the __subjects array', function() {
-          assert.equal(this.__subjects[this.__subjects.length - 1], TEST_OBJECT);
+        it('should adds info object to the end of the __subjects array', function() {
+          var info = this.__subjects[this.__subjects.length - 1];
+          assert.equal(info.name, 'subject');
+          assert.equal(info.factory(), TEST_OBJECT);
+          assert.equal(info.instance, TEST_OBJECT);
         });
 
         describe('with property subject', function() {
@@ -94,7 +108,7 @@
         });
 
         describe('nested within another object context', function() {
-          subject.subject('subject2', TEST_OBJECT2);
+          subject.subject('subject2', function() { return TEST_OBJECT2; });
 
           it('should adds nested object to the context', function() {
             assert.equal(this['subject2'], TEST_OBJECT2);
@@ -104,8 +118,11 @@
             assert.equal(this['subject'], TEST_OBJECT);
           });
 
-          it('should adds nested object to the end of the __subjects array', function() {
-            assert.equal(this.__subjects[this.__subjects.length - 1], TEST_OBJECT2);
+          it('should adds info for nested object to the end of the __subjects array', function() {
+            var info = this.__subjects[this.__subjects.length - 1];
+            assert.equal(info.name, 'subject2');
+            assert.equal(info.factory(), TEST_OBJECT2);
+            assert.equal(info.instance, TEST_OBJECT2);
           });
 
           describe('with a property subject', function() {

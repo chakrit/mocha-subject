@@ -1,8 +1,10 @@
 
 # MOCHA-SUBJECT
 
-Provides `subject()`-style setup/teardowns combos that simplifies common test patterns
-with [mocha.js](http://visionmedia.github.com/mocha/).
+Adds on to [mocha.js](http://visionmedia.github.com/mocha/).
+
+Provides a different way to implement `before()` and `after()` hook that properly cleans
+itself up after every test run simplifying several common test patterns.
 
 ### API Documentation
 
@@ -14,15 +16,17 @@ See the annotated source at http://gh.chakrit.net/mocha-subject/
 var ms = require('mocha-subject')
   , TestObject = require('../lib/test-object.js');
 
+ms.infect(); // (optional) uses globoally.
+
 describe('TestObject', function() {
-  ms.subject('test', new TestObject());
+  subject('test', function() { return new TestObject(); });
 
   it('should ...', function() {
     this.test; // test the object
   });
 
   describe('property ABC', function() {
-    ms.property('abc');
+    property('abc');
 
     it('should ...', function() {
       this.abc; // test property 'abc' of TestObject
@@ -84,7 +88,7 @@ question, bug reports or support requests.
 * An encapsulated extendable `Subject` class to factor out setups/teardowns code even
   futher.
 * Hook into the node.js module system to simplify subjects even further. (i.e. automatic
-  requires from the string.)
+  requires from a string.)
 * Smoother integration with mocha. Right now `infect()` and `disinfect()` requires you to
   set the `--globals` flags for mocha manually.
 
