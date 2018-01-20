@@ -1,7 +1,7 @@
 
 # MOCHA-SUBJECT
 
-Adds on to [mocha.js](http://visionmedia.github.com/mocha/).
+Adds on to [mocha.js](http://mochajs.org/).
 
 Provides a different way to implement `before()` and `after()` hook that properly cleans
 itself up after every test run simplifying several common test patterns.
